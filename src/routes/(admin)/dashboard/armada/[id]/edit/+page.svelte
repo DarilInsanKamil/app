@@ -1,0 +1,127 @@
+<script lang='ts'>
+    import { enhance } from "$app/forms";
+	import { resolve } from "$app/paths";
+	import Button from "$lib/components/ui/button/button.svelte";
+	import { addToast } from "$lib/toast.svelte";
+    import type { PageProps } from "./$types";
+    let {data} : PageProps = $props();
+    let previewUrl = $derived(data?.imageUrl ?? null);
+
+    function handleImageChange(event: Event) {
+      const input = event.target as HTMLInputElement;
+      if (input.files && input.files[0]) {
+        previewUrl = URL.createObjectURL(input.files[0]);
+      }
+    }
+
+</script>
+
+<div class="py-5 lg:px-10 px-5">
+    <a href={resolve("/dashboard/armada")} class="flex gap-2">
+        Kembali
+    </a>
+</div>
+
+<section class="lg:p-10 p-5">
+    <form
+        action="?/update"
+        method="POST" class="grid lg:gap-5 gap-3 lg:w-1/2 w-full"
+        enctype="multipart/form-data"
+        use:enhance={() => {
+      return async({result, update}) => {
+        if(result.type === 'success') {
+          addToast('Berhasil Merubah data', 'success')
+        } else if (result.type === 'failure') {
+          console.error(result.data as { message?: string })
+          addToast((result.data as { message?: string })?.message || "Terjadi kesalahan", 'fail')
+        }
+        await update()
+      }
+    }}>
+        <div>
+            <label for="image" class="font-semibold">
+                Gambar Armada *
+            </label>
+            <br>
+            <input
+                type="file"
+                name="image"
+                accept="image/*"
+                class="border mt-2 w-full border-green-400 focus:outline-green-600 p-2 rounded-md"
+                onchange={handleImageChange}
+            >
+            {#if previewUrl}
+                <p class="text-sm text-gray-500 mb-2"> {previewUrl.startsWith('blob:') ? 'Preview Gambar Baru:' : 'Gambar Saat Ini:'}</p>
+                <img
+                    src={previewUrl}
+                    alt="Preview armada"
+                    class="w-full max-w-xs h-48 object-cover rounded-md border border-gray-300"
+                >
+            {/if}
+        </div>
+        <div>
+            <label for="namaArmada" class="font-semibold">
+                Nama Armada *
+            </label>
+            <br>
+            <input
+                type="text"
+                name="namaArmada"
+                value={data.namaArmada ?? ""}
+                placeholder="Masukan nama armada"
+                class="border mt-2 w-full border-green-400 focus:outline-green-600 p-2 rounded-md"
+                required
+            >
+        </div>
+        <div>
+            <label for="hargaSewa" class="font-semibold">
+                Harga Sewa *
+            </label>
+            <br>
+            <input
+                type="text"
+                name="hargaSewa"
+                value={data.hargaSewa ?? ""}
+                placeholder="Masukan harga sewa/hari"
+                class="border mt-2 w-full border-green-400 focus:outline-green-600 p-2 rounded-md"
+                required
+            >
+        </div>
+        <div>
+            <label for="kapasitas" class="font-semibold">
+                Kapasitas *
+            </label>
+            <br>
+            <input
+                type="number"
+                name="kapasitas"
+                value={data.kapasitas ?? ""}
+                placeholder="Masukan jumlah kapasitas"
+                class="border mt-2 w-full border-green-400 focus:outline-green-600 p-2 rounded-md"
+                required
+            >
+        </div>
+        <div>
+            <label for="platNomor" class="font-semibold">
+                Plat Nomor *
+            </label>
+            <br>
+            <input
+                type="text"
+                name="platNomor"
+                value={data.platNomor ?? ""}
+                placeholder="Masukan nopol armada"
+                class="border mt-2 w-full border-green-400 focus:outline-green-600 p-2 rounded-md"
+                required
+            >
+        </div>
+        <div>
+            <label for="deskripsi" class="font-semibold">
+                Deskripsi *
+            </label>
+            <br>
+            <textarea name="deskripsi" placeholder="Masuk deskrirpsi armada" class="border mt-2 w-full border-green-400 focus:outline-green-600 p-2 rounded-md" required>{data.deskripsi ?? ""}</textarea>
+        </div>
+        <Button type='submit' class="bg-green-900 hover:bg-green-800">Upload Data Armada</Button>
+    </form>
+</section>

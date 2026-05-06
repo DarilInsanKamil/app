@@ -1,0 +1,126 @@
+<script lang='ts'>
+	import { enhance } from "$app/forms";
+	import { resolve } from "$app/paths";
+	import { addToast } from "$lib/toast.svelte";
+	import { Frown, PencilLine, Plus, Trash } from "@lucide/svelte";
+	import type { PageProps } from "./$types";
+	import Button from "$lib/components/ui/button/button.svelte";
+
+    let {data}: PageProps = $props()
+</script>
+
+<section class="lg:p-10 p-5 w-full">
+  <section class="lg:flex inline justify-between items-center mb-5">
+      <form action="?search" class="w-full ">
+        <input
+          type="text"
+          name="search"
+          placeholder="Cari nama bundle"
+          class="border border-green-400 focus:outline-green-600 px-2 py-1 rounded-sm lg:mb-0 mb-3"
+        />
+        <Button size="sm" class="bg-green-900 hover:bg-green-800">Cari</Button>
+      </form>
+    <a href={resolve("/dashboard/bundle/create")} >
+        <Button class="bg-green-900 hover:bg-green-800"><Plus size={20} />Tambah Bundle</Button>
+    </a>
+  </section>
+
+  <div class="w-full overflow-hidden rounded-lg border border-gray-200 lg:m-0 mt-2">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm text-gray-500">
+        <thead class="bg-green-100 text-xs uppercase text-gray-700">
+          <tr>
+            <th scope="col" class="px-6 py-3 font-medium">No</th>
+            <th scope="col" class="px-6 py-3 font-medium">Nama Bundle</th>
+            <th scope="col" class="px-6 py-3 font-medium">Jumlah Unit</th>
+            <th scope="col" class="px-6 py-3 font-medium">Harga Sewa</th>
+            <th scope="col" class="px-6 py-3 font-medium">Addons</th>
+            <th scope="col" class="px-6 py-3 font-medium">Deskripsi</th>
+            <th scope="col" class="px-6 py-3 font-medium">Action</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200 bg-white">
+          {#if data.dataBundle && data.dataBundle.length > 0}
+            {#each data.dataBundle as bundle, i (bundle.id)}
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td
+                  class="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
+                >
+                  {i + 1}
+                </td>
+                <td
+                  class="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
+                >
+                  {bundle.namaBundle}
+                </td>
+                <td class="whitespace-nowrap px-6 py-4">
+                    {bundle.jumlahUnit} Unit
+                </td>
+                <td class="whitespace-nowrap px-6 py-4 text-gray-700">
+                  {bundle.hargaBundle}
+                </td>
+                <td class="whitespace-nowrap px-6 py-4">
+                  {#each bundle.addOns as addons }
+                      <span
+                        class="rounded bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-600 mr-1"
+                      >
+                        {addons}
+                      </span>
+                  {/each}
+                </td>
+                <td class="px-6 py-4">
+                  <p
+                    class="max-w-xs truncate text-gray-500"
+                    title={bundle.deskripsi}
+                  >
+                    {bundle.deskripsi}
+                  </p>
+                </td>
+                <td class="flex gap-2 px-6 py-4">
+                  <a href={resolve(`/dashboard/paket-bundle/${bundle.id}/edit`)}>
+                    <Button size="icon-sm" variant="outline" class="hover:bg-green-50">
+                      <PencilLine size={20} color="#5b9810" />
+                    </Button>
+                  </a>
+                  <form
+                    action="?/delete"
+                    method="POST"
+                    use:enhance={() => {
+                      return async ({ result, update }) => {
+                        if (result.type === "success") {
+                          addToast("Berhasil Menghapus data", 'success');
+                        } else if (result.type === "failure") {
+                          addToast(
+                            (result.data as { message?: string })?.message || "Terjadi kesalahan",
+                            'fail');
+                        }
+                        await update();
+                      };
+                    }}
+                  >
+                    <input type="hidden" name="id" value={bundle.id} />
+                    <Button type="submit" variant="destructive" size="icon-sm">
+                      <Trash size={20} />
+                    </Button>
+                  </form>
+                </td>
+              </tr>
+            {/each}
+          {:else}
+            <tr>
+              <td colspan="5" class="px-6 py-10 text-center">
+                <div
+                  class="flex flex-col items-center justify-center space-y-2"
+                >
+                  <Frown size={40} color="#b5b5b5" />
+                  <p class="text-gray-500">Belum ada data bundle tersedia.</p>
+                </div>
+              </td>
+            </tr>
+          {/if}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
