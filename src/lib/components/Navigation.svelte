@@ -34,6 +34,9 @@ class={cn("fixed z-50 w-[90%] mx-auto top-0 left-0 right-0 mt-2 bg-white/80 roun
     <li>
       <a href={resolve("/gallery")} class="hover:text-green-700 transition-colors">Gallery</a>
     </li>
+    <li class='bg-green-300 p-1 rounded-md'>
+      <a href={resolve("/checkbooking")} class="hover:text-green-700 transition-colors">Check Kode Booking</a>
+    </li>
   </ul>
 </div>
 </nav>
