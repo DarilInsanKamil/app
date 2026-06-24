@@ -13,7 +13,7 @@
 	<title>Login - Jeep Station Puncak</title>
 </svelte:head>
 
-<main class="mt-24 flex min-h-[calc(100vh-6rem)] items-center justify-center px-5 py-12">
+<main class="mt-16 flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-8">
 	<section class="grid w-full max-w-5xl overflow-hidden rounded-lg border border-green-100 bg-white shadow-sm lg:grid-cols-[0.9fr_1.1fr]">
 
 		<div class="p-6 md:p-10">

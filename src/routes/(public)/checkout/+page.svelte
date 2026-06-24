@@ -27,8 +27,8 @@
   }
 </script>
 
-<section class="grid md:grid-cols-12 grid-cols-6 md:px-20 px-5 md:mt-25 md:gap-5 gap-2">
-  <div class="col-start-1 col-end-7">
+<section class="grid grid-cols-1 md:grid-cols-12 px-4 md:px-20 mt-20 md:mt-28 gap-4 md:gap-5 pb-8">
+  <div class="col-span-1 md:col-span-6">
     {#if data.tipe === 'armada'}
       <div>
         <img src={data.dataArmada.imageUrl} alt={data.dataArmada.namaArmada} class="rounded-md"/>
@@ -54,7 +54,7 @@
     {/if}
   </div>
 
-  <div class="md:col-start-7 col-start-1 md:col-end-13 col-end-6 border p-3 rounded-md">
+  <div class="col-span-1 md:col-span-6 border p-3 rounded-md">
     <form
       action="?/upload"
       method="POST"

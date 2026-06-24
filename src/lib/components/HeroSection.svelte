@@ -28,27 +28,29 @@
     <img
       src={background}
       alt="Hero background"
-      class="w-full object-cover mask-b-from-85% mask-b-to-90%"
+      class="w-full object-cover mask-b-from-85% mask-b-to-90% min-h-[420px] md:min-h-0"
       fetchpriority="high"
       loading="eager"
       height="120px"
     />
 
-    <div class="absolute bottom-24 left-20 right-20">
+    <div class="absolute bottom-6 md:bottom-16 lg:bottom-24 left-4 right-4 md:left-10 lg:left-20 md:right-10 lg:right-20">
       <h1
-        class="max-w-2xl text-5xl font-extrabold leading-12 text-white tracking-tight mb-2"
+        class="max-w-2xl text-2xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-white tracking-tight mb-3"
       >
         Sewa dan Reservasi Cepat<br />
         di Jeep Station Puncak
       </h1>
-      <section class="bg-white p-4 rounded-md flex gap-2 items-end">
-        <DateRangePick bind:value={searchFilter}/>
-
+      <section class="bg-white p-3 md:p-4 rounded-md flex flex-col sm:flex-row gap-2 items-stretch sm:items-end">
+        <div class="flex-1">
+          <DateRangePick bind:value={searchFilter}/>
+        </div>
 
         <Button
                onclick={handlePesan}
                size="lg"
                variant="outline"
+               class="w-full sm:w-auto"
              >
                Pesan Sekarang
         </Button>

@@ -65,50 +65,57 @@
   }
 </script>
 
-<main class="md:mt-20 mt-10 md:px-10 md:pb-5 px-5 grid md:grid-cols-12 grid-cols-6 md:gap-5">
-    <section class="col-start-1 md:col-end-9 col-end-6">
-    <img src={data.dataBundle?.imageUrl} alt={data.dataBundle?.namaBundle} class="rounded-lg"/>
+<main class="mt-20 md:mt-28 px-4 md:px-10 pb-5">
+  <div class="mx-auto max-w-6xl">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+      <!-- Image -->
+      <section class="md:col-span-7 lg:col-span-8">
+        <img src={data.dataBundle?.imageUrl} alt={data.dataBundle?.namaBundle} class="rounded-lg w-full object-cover"/>
+      </section>
 
-    </section>
-    <section class="md:col-start-9 md:col-end-13 col-start-1 col-end-6">
-        <div class="bg-white p-2 border rounded-md">
-        <h3 class="font-semibold text-2xl">{data.dataBundle?.namaBundle}</h3>
-        <div class="flex flex-col">
-            <div class="mt-3 bg-gray-200 w-fit py-1 px-2 rounded-sm">
-                <p class="text-xs font-semibold">Jumlah: {data.dataBundle?.jumlahUnit} unit</p>
+      <!-- Booking sidebar -->
+      <section class="md:col-span-5 lg:col-span-4 flex flex-col gap-3">
+        <div class="bg-white p-3 border rounded-md">
+          <h3 class="font-semibold text-xl md:text-2xl">{data.dataBundle?.namaBundle}</h3>
+          <div class="flex flex-col mt-2 gap-2">
+            <div class="bg-gray-200 w-fit py-1 px-2 rounded-sm">
+              <p class="text-xs font-semibold">Jumlah: {data.dataBundle?.jumlahUnit} unit</p>
             </div>
-            <div class="flex gap-2 items-baseline">
-            <p>addOns: </p>
-                {#each data.dataBundle && data.dataBundle.addOns as addons, i(i)}
-                <div class="mt-3 bg-green-200 w-fit py-1 px-2 rounded-sm">
-                    <p class="text-xs font-semibold">{addons}</p>
+            <div class="flex flex-wrap gap-2 items-baseline">
+              <p class="text-sm text-gray-600">Add-ons:</p>
+              {#each data.dataBundle && data.dataBundle.addOns as addons, i(i)}
+                <div class="bg-green-200 w-fit py-1 px-2 rounded-sm">
+                  <p class="text-xs font-semibold">{addons}</p>
                 </div>
-                {/each}
+              {/each}
             </div>
+          </div>
+          <div class="mt-2">
+            <h3 class="font-semibold text-xl">{fmt(Number(data.dataBundle?.hargaBundle))}<span class="text-sm">/hari</span></h3>
+          </div>
         </div>
-        <div class="mt-2">
-        <h3 class="font-semibold text-xl">{fmt(Number(data.dataBundle?.hargaBundle))}<span class="text-sm">/hari</span></h3>
-        </div>
-        </div>
-        <div class="mt-2 bg-white p-2 border rounded-md">
-            <DateRangePick bind:value={searchFilter}/>
-            {#if errorMsg}
-                   <div class="mt-3 flex items-start gap-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded-md p-2">
-                     <CircleAlert size={16} class="mt-0.5 shrink-0"/>
-                     <p>{errorMsg}</p>
-                   </div>
-            {/if}
-            <div class="mt-5">
-            <p class="font-semibold"><span class="text-gray-700 font-normal">Durasi</span>: {durationInDays} hari</p>
-            <p class="font-semibold text-2xl">Total Biaya: {fmt(totalHarga)}</p>
+
+        <div class="bg-white p-3 border rounded-md">
+          <DateRangePick bind:value={searchFilter}/>
+          {#if errorMsg}
+            <div class="mt-3 flex items-start gap-2 text-red-600 text-sm bg-red-50 border border-red-200 rounded-md p-2">
+              <CircleAlert size={16} class="mt-0.5 shrink-0"/>
+              <p>{errorMsg}</p>
             </div>
-            <Button
-                   onclick={handlePesan}
-                   class="hover:bg-green-700 bg-green-600 w-full mt-5"
-                   size="lg"
-                 >
-                   {isChecking ? 'Mengecek ketersediaan...' : 'Pesan Sekarang'}
-            </Button>
+          {/if}
+          <div class="mt-4">
+            <p class="font-semibold text-sm"><span class="text-gray-700 font-normal">Durasi</span>: {durationInDays} hari</p>
+            <p class="font-semibold text-xl mt-1">Total Biaya: {fmt(totalHarga)}</p>
+          </div>
+          <Button
+            onclick={handlePesan}
+            class="hover:bg-green-700 bg-green-600 w-full mt-4"
+            size="lg"
+          >
+            {isChecking ? 'Mengecek ketersediaan...' : 'Pesan Sekarang'}
+          </Button>
         </div>
-    </section>
+      </section>
+    </div>
+  </div>
 </main>

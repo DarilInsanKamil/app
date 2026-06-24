@@ -52,6 +52,7 @@
 body {
 	color: black;
 	background-color: #FFFDF7;
+	overflow-x: hidden;
 }
 
 @layer components {
